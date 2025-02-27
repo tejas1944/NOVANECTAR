@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="about" class="section about">
+      <div class="about-content">
+        <div class="about-text">
+          <h1>About Me</h1>
+          <p>
+            I am a detail-oriented Java Developer with a strong foundation in
+            building robust and scalable applications using Java, Spring, and
+            Spring Boot. With a passion for backend development, I specialize in
+            designing efficient, high-performance systems that seamlessly
+            integrate with modern front-end technologies like React, HTML, CSS,
+            and JavaScript.
+          </p>
+          <p>
+            My expertise extends to database management with MySQL, ensuring
+            optimized data storage and retrieval. I am also familiar with cloud
+            computing concepts, allowing me to develop solutions that are not
+            only scalable but also adaptable to evolving technological demands.
+          </p>
+        </div>
+        <div class="about-image">
+          <img src="profile.jpeg" alt="Profile Image" />
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <h1>Projects</h1>
+      <div class="project-grid">
+        <div class="project">
+          <img src="img.jpeg" alt="Project 1" />
+          <h2>Todo App</h2>
+          <p>
+            The To-Do App is a React-based task management application designed
+            to help users efficiently add, track, and delete tasks. Built using
+            React and Redux, the app ensures seamless state management, allowing
+            users to maintain an organized task list with real-time updates. The
+            UI is crafted with advanced CSS techniques, making it both visually
+            appealing and responsive across all devices.
+          </p>
+        </div>
+        <div class="project">
+          <img src="download.jpeg" alt="Project 2" />
+          <h2>Weather App</h2>
+          <p>
+            The Weather App is a React-based application that provides real-time
+            weather updates based on user input. It integrates with an external
+            weather API to fetch accurate weather data, including temperature,
+            humidity, wind speed, and weather conditions for any location. The
+            app is designed with a clean and intuitive interface, making it easy
+            for users to check the weather at a glance.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <h1>Skills</h1>
+      <div class="skills-grid">
+        <div class="skill">
+          <img src="html.png" alt="HTML" />
+          <p>HTML</p>
+        </div>
+        <div class="skill">
+          <img src="css.jpeg" alt="CSS" />
+          <p>CSS</p>
+        </div>
+        <div class="skill">
+          <img src="js.png" alt="JavaScript" />
+          <p>JavaScript</p>
+        </div>
+        <div class="skill">
+          <img src="react.png" alt="React" />
+          <p>React</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <h1>Contact</h1>
+      <form id="contact-form">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+
+    <footer>
+      <p>© 2025 Tejas Patil. All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>
