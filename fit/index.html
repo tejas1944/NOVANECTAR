@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitness Tracker App</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #e8f5e9);
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .navbar {
+      background: #388e3c;
+      padding: 20px;
+      color: white;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    select, input, button {
+      padding: 14px;
+      margin: 12px 0;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    input, select {
+      background: #f1f8e9;
+      border: 1px solid #c5e1a5;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #388e3c;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 14px;
+      text-align: center;
+      background: #f9fbe7;
+    }
+
+    th {
+      background-color: #c5e1a5;
+    }
+
+    canvas {
+      margin-top: 40px;
+    }
+
+    section {
+      margin-top: 60px;
+    }
+
+    .section-title {
+      background: #81c784;
+      color: white;
+      padding: 15px;
+      border-radius: 8px 8px 0 0;
+      font-size: 1.5rem;
+    }
+
+    .section-content {
+      padding: 25px;
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      background: #f1f8e9;
+    }
+
+    @media screen and (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">Fitness Tracker</div>
+
+  <div class="container">
+    <h1>Track Your Daily Activities</h1>
+    <select id="activity">
+      <option value="Running">Running</option>
+      <option value="Cycling">Cycling</option>
+      <option value="Swimming">Swimming</option>
+      <option value="Walking">Walking</option>
+      <option value="Yoga">Yoga</option>
+    </select>
+    <input type="number" id="duration" placeholder="Duration (in minutes)" />
+    <select id="intensity">
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+    <button onclick="addActivity()">Add Activity</button>
+
+    <table id="activityTable">
+      <thead>
+        <tr>
+          <th>Activity</th>
+          <th>Duration (min)</th>
+          <th>Intensity</th>
+          <th>Calories Burned</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <canvas id="calorieChart"></canvas>
+
+    <section>
+      <div class="section-title">About</div>
+      <div class="section-content">
+        This app helps you track your fitness activities, measure how many calories you’ve burned, and view your overall performance in a visual chart.
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">Tips</div>
+      <div class="section-content">
+        Stay hydrated, maintain a regular schedule, and mix different types of workouts to improve overall fitness and avoid monotony.
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">Nutrition</div>
+      <div class="section-content">
+        Combine your fitness activities with a balanced diet rich in proteins, healthy fats, and vitamins to maximize your results.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const tableBody = document.querySelector("#activityTable tbody");
+    const ctx = document.getElementById('calorieChart').getContext('2d');
+
+    let activities = [];
+    let chart;
+
+    function calculateCalories(activity, duration, intensity) {
+      const baseRates = {
+        Running: 10,
+        Cycling: 8,
+        Swimming: 11,
+        Walking: 4,
+        Yoga: 3
+      };
+
+      const intensityFactor = intensity === 'low' ? 0.8 : intensity === 'medium' ? 1 : 1.2;
+      return Math.round(duration * baseRates[activity] * intensityFactor);
+    }
+
+    function addActivity() {
+      const activity = document.getElementById('activity').value;
+      const duration = parseInt(document.getElementById('duration').value);
+      const intensity = document.getElementById('intensity').value;
+
+      if (!activity || isNaN(duration)) {
+        alert("Please enter valid activity and duration.");
+        return;
+      }
+
+      const calories = calculateCalories(activity, duration, intensity);
+      activities.push({ activity, duration, intensity, calories });
+      updateTable();
+      updateChart();
+
+      document.getElementById('duration').value = "";
+    }
+
+    function updateTable() {
+      tableBody.innerHTML = "";
+      activities.forEach(item => {
+        const row = `<tr>
+                      <td>${item.activity}</td>
+                      <td>${item.duration}</td>
+                      <td>${item.intensity}</td>
+                      <td>${item.calories}</td>
+                    </tr>`;
+        tableBody.innerHTML += row;
+      });
+    }
+
+    function updateChart() {
+      const labels = activities.map((a, i) => `${a.activity} (${i + 1})`);
+      const data = activities.map(a => a.calories);
+
+      if (chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Calories Burned',
+            data: data,
+            fill: false,
+            borderColor: 'rgba(76, 175, 80, 1)',
+            backgroundColor: 'rgba(76, 175, 80, 0.2)',
+            tension: 0.4,
+            pointBackgroundColor: '#4CAF50',
+            pointBorderColor: '#fff',
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: {
+                color: '#388e3c'
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Calories'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Activities'
+              }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
